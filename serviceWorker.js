@@ -1,30 +1,30 @@
-if (navigator.serviceWorker) {
-    navigator.serviceWorker.register('http://localhost:8000/serviceWorker.js', { scope: '/' }).then(() => {
+const cacheName = 'SWCache'
+const filesToCache = [ 'restaurant.html', '/js/restaurant_info.js' ]
 
-        const filesToCache = [ '/', 'restaurant.html', 'js/main.js', 'js/dbhelper.js', 'js/restaurant_info.js',
-        'css/styles.css', 'data/restaurants.json', 'img/1.jpg', 'img/2.jpg', 'img/3.jpg', 'img/4.jpg', 
-        'img/5.jpg', 'img/6.jpg', 'img/7.jpg', 'img/8.jpg', 'img/9.jpg', 'img/10.jpg' ]
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(cacheName).then(cache => {
+            cache.addAll(filesToCache)
+        })
+    )
+});
 
-        self.addEventListener('install', event => {
-            event.waitUntil(
-                caches.open('SWCache')
-                    .then(cache => {
-                        console.log('cache opened');
-                        return cache.addAll(filesToCache);
+self.addEventListener('fetch', event => {
+    console.log(`Caught ${event.request}`)
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                if (response) {
+                    return response
+                }
+                fetch(event.request).then(response => {
+                    caches.open(cacheName).then(cache => {
+                        cache.put(event.request, response.clone())
+                        console.log('added to cache!')
                     })
-            )
-        });
-
-        self.addEventListener('fetch', event => 
-            event.respondWith(
-                caches.match(event.request)
-                    .then(response => response || fetch(event.request).then(response => {
-                        cache.put(event.request, response.clone());
-                        return response;
-                    })
-            )
-        ));
-
-
-    })
-}
+                    return response;
+                })
+            }
+        )
+    )}
+);
