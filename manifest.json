@@ -1,0 +1,21 @@
+{
+    "short_name": "Udacity",
+    "name": "Udacity Mobile Web Specialist",
+    "icons": [
+        {
+          "src": "/icons-192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        },
+        {
+          "src": "/icons-512.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#03b3e4",
+    "background_color": "#03b3e4"
+  }
+  

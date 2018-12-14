@@ -163,7 +163,7 @@ createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DataFetcher.imageUrlForRestaurant(restaurant);
+  image.src = DataFetcher.imageUrlForRestaurant(restaurant, 'small');
   image.alt = restaurant.name;
   li.append(image);
 
