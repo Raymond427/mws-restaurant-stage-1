@@ -1,3 +1,5 @@
+import('/js/idb.js')
+
 let restaurants,
   neighborhoods,
   cuisines
@@ -185,6 +187,45 @@ createRestaurantHTML = (restaurant) => {
   more.role = "button";
   more.ariaLabel = `View Details for ${restaurant.name}`
   li.append(more)
+
+  const favoriteLabel = document.createElement('label')
+  favoriteLabel.for = `favorite-${restaurant.id}`
+  favoriteLabel.innerHTML = 'Favorite'
+  const favorite = document.createElement('input')
+  favorite.type = 'checkbox'
+  favorite.checked = restaurant.is_favorite && restaurant.is_favorite !== 'false'
+  favorite.id = `restaurant-favorite--${restaurant.id}`
+  li.append(favorite)
+  li.append(favoriteLabel)
+
+  const favoriteRestaurant = (id, isFavorited) => {
+    fetch(`http://localhost:1337/restaurants/${id}/?is_favorite=${isFavorited}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+      import('/js/idb.js')
+      idb.open('RestaurantDatabase', 1).then(db => {
+        db.transaction('restaurants', 'readwrite')
+          .objectStore('restaurants')
+            .put({ ...restaurant, is_favorite: isFavorited })
+      })
+    }).catch(() => {
+      idb.open('RestaurantDatabase', 1).then(db => {
+        db.transaction('restaurants', 'readwrite')
+          .objectStore('restaurants')
+            .put({ ...restaurant, is_favorite: isFavorited })
+      })
+      idb.open('RestaurantDatabase', 1).then(db => {
+        const favorites = db.transaction('favoritesCache', 'readwrite').objectStore('favoritesCache')
+        favorites.get(id).then(favoriteInDatabase => favoriteInDatabase ? favorites.put({ id, is_favorite: isFavorited }) : favorites.add({ id, is_favorite: isFavorited }))
+      })
+    })
+  }
+
+  favorite.addEventListener('click', event => {
+    favoriteRestaurant(restaurant.id, event.target.checked)
+  })
 
   return li
 }

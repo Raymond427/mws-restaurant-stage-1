@@ -155,7 +155,6 @@ nav h1 a {
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
   margin: 15px;
-  text-align: left;
   min-width: 270px;
   max-width: 270px;
 }
@@ -265,10 +264,37 @@ nav h1 a {
 #restaurant-container {
   padding-top: 140px;
 }
+#reviews-container {
+  text-align: center;
+  padding-bottom: 65px;
+}
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   width: 50%;
+}
+#reviews-create--header {
+  color: #AD5C00;
+  font-size: 15pt;
+  font-weight: 100;
+}
+#reviews-form {
+  text-align: left;
+  max-width: 320px;
+  margin: 0 auto;
+}
+#reviews-form input, select, textarea {
+  width: 320px;
+}
+#review-create--textarea-input {
+  height: 100px;
+  resize: none;
+}
+#review-create--submit-input {
+  background-color: #AD5C00;
+  color: #FFFFFF;
+  border: none;
+  padding: 8px 30px 10px;
 }
 #reviews-container h2 {
   color: #AD5C00;
@@ -285,13 +311,14 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 15px 0;
   overflow: hidden;
   padding: 20px;
   position: relative;
+  text-align: left;
 }
 #reviews-list li p {
   margin: 0 0 10px;
